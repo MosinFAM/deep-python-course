@@ -1,7 +1,7 @@
 import unittest
 
 
-from GEN import gen
+from gen import gen
 
 
 

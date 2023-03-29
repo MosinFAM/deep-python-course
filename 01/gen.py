@@ -4,6 +4,3 @@ def gen(file_name, lst):
             for word in lst:
                 if word.lower() in line.lower().split(' '):
                     yield line
-
-
-

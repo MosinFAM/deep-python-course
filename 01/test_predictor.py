@@ -10,22 +10,29 @@ class TestPredict(unittest.TestCase):
         with mock.patch("predictor.SomeModel") as mock_model:
             instance = mock_model.return_value
             instance.predict.return_value = 1
-            self.assertEqual(predict_message_mood("Вулкан", instance, 0.1, 0.9), "отл")
+            self.assertEqual(predict_message_mood(
+                "Вулкан", instance, 0.1, 0.9), "отл"
+            )
             expected_calls = [
                 mock.call("Вулкан"),
             ]
             self.assertEqual(expected_calls, instance.predict.mock_calls)
 
             instance.predict.return_value = 0.9
-            self.assertEqual(predict_message_mood("Чапаев и пустота", instance, 0.2, 0.9), "норм")
+            self.assertEqual(predict_message_mood(
+                "Чапаев и пустота", instance, 0.2, 0.9), "норм"
+            )
             expected_calls = [
                  mock.call("Вулкан"),
                  mock.call("Чапаев и пустота"),
             ]
-            self.assertEqual(expected_calls, instance.predict.mock_calls)
+            self.assertEqual(
+                expected_calls, instance.predict.mock_calls)
 
             instance.predict.return_value = 0.3
-            self.assertEqual(predict_message_mood("Пустота", instance, 0.3, 0.5), "норм")
+            self.assertEqual(predict_message_mood(
+                "Пустота", instance, 0.3, 0.5), "норм"
+            )
             expected_calls = [
                 mock.call("Вулкан"),
                 mock.call("Чапаев и пустота"),
@@ -33,8 +40,10 @@ class TestPredict(unittest.TestCase):
             ]
             self.assertEqual(expected_calls, instance.predict.mock_calls)
 
-            instance.predict.return_value = 0.3
-            self.assertEqual(predict_message_mood("Чапаев", instance, 0.4, 0.9), "неуд")
+            instance.predict.return_value = 0.1
+            self.assertEqual(predict_message_mood(
+                "Чапаев", instance, 0.4, 0.9), "неуд"
+            )
             expected_calls = [
                 mock.call("Вулкан"),
                 mock.call("Чапаев и пустота"),
@@ -52,4 +61,3 @@ class TestPredict(unittest.TestCase):
                 predict_message_mood("Вулкан", mock_model)
 
             self.assertEqual(str(err.exception), "WRONG")
-
