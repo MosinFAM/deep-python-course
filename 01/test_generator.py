@@ -1,8 +1,7 @@
 import unittest
 
 
-from gen import gen
-
+from generator import gen
 
 
 class TestPredict(unittest.TestCase):

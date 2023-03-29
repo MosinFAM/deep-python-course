@@ -4,7 +4,6 @@ from unittest import mock
 from predictor import predict_message_mood
 
 
-
 class TestPredict(unittest.TestCase):
     def test_predict_message_mood(self):
         with mock.patch("predictor.SomeModel") as mock_model:
@@ -51,7 +50,6 @@ class TestPredict(unittest.TestCase):
                 mock.call("Чапаев"),
              ]
             self.assertEqual(expected_calls, instance.predict.mock_calls)
-
 
     def test_predict_message_mood_failed(self):
         with mock.patch("predictor.SomeModel") as mock_model:
