@@ -3,9 +3,6 @@ class SomeModel:
         return 1
 
 
-model = SomeModel
-
-
 def predict_message_mood(
     message: str,
     model: SomeModel,
