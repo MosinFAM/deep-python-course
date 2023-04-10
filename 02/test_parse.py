@@ -13,6 +13,8 @@ class TestParser(unittest.TestCase):
                 required_fields=[],
                 keywords=["word2"])
             self.assertEqual(mock_obj.call_count, 0)
+            expected_calls = []
+            self.assertEqual(expected_calls, mock_obj.mock_calls)
 
             parse_json(
                 mock_obj,
