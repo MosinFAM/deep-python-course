@@ -7,16 +7,21 @@ def parse_json(
     if keywords is None:
         print('keywords=None')
 
-    json_doc = json.loads(json_str)
-    for key, value in json_doc.items():
-        if required_fields is not None and key in required_fields:
-            if keywords is not None:
+    if required_fields is None:
+        print('required_fields=None')
+
+    if keyword_callback is None:
+        print('keyword_callback=None')
+
+    if keywords is not None and \
+            required_fields is not None and \
+            keyword_callback is not None:
+        json_doc = json.loads(json_str)
+        for key, value in json_doc.items():
+            if key in required_fields:
                 for keyword in keywords:
                     if keyword in value.split(' '):
                         keyword_callback(keyword, key)
-        elif required_fields is None:
-            print('required_fields=None')
-            break
 
 
 # print(parse_json(
