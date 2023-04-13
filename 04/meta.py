@@ -9,9 +9,11 @@ class CustomMeta(type):
 
     def __call__(cls, *args, **kwargs):
         def setattr_(self, key, value):
-            if not (key.startswith('__') and key.endswith('__')):
-                new_name = 'custom_' + key
-                self.__dict__[new_name] = value
+                if not ((key.startswith('__') and key.endswith('__')) or key.startswith('custom_')):
+                    new_name = 'custom_' + key
+                    self.__dict__[new_name] = value
+                elif key.startswith('custom_'):
+                    self.__dict__[key] = value
         cls.__setattr__ = setattr_
 
         new_object = super().__call__(*args, **kwargs)
@@ -37,7 +39,8 @@ class CustomClass(metaclass=CustomMeta):
         return "Custom_by_metaclass"
 
 # inst = CustomClass()
-# inst.dynamic = "added later"
+# inst.custom_dynamic = "added later"
+# inst.dynamo = "added"
 # print(inst.custom_dynamic)
+# print(inst.custom_dynamo)
 # print(inst.__dict__)
-# # print(locals())
