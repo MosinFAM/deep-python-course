@@ -1,13 +1,14 @@
 import queue
 import threading
-import requests
+import json
 import socket
 from sys import argv
 from bs4 import BeautifulSoup
-from collections import OrderedDict
+from urllib.request import urlopen
 
+# print(argv)
 w, k = int(argv[2]), int(argv[4])
-q = queue.Queue()
+queue_of_urls = queue.Queue()
 
 
 def master():
@@ -18,35 +19,38 @@ def master():
     server_sock.listen(2)
     while True:
         client_sock, addr = server_sock.accept()
-        q.put(client_sock)
+        queue_of_urls.put(client_sock)
 
 
 def worker():
     while True:
-        client_socket = q.get()
-        url = client_socket.recv(1024).decode()
-        fetch_url(url, sem)
+        client_socket = queue_of_urls.get()
+        urls = client_socket.recv(1024).decode()
+        fetch_url(urls)
         client_socket.close()
-        print("Closed connection with client")
-        q.task_done()
+        queue_of_urls.task_done()
 
 
 def fetch_url(client_sock):
-    th = threading.current_thread()
+    url = urlopen(client_sock.recv(1024).decode())
+    a = url.read()
+    res_html = a.decode("utf-8")
+    freq = counter(res_html)
+    temp_top_k = sorted(freq.items(), key=lambda x: x[1], reverse=True)[:k]
+    top_k = json.dumps(dict(temp_top_k))
 
-    with sem:
-        url = client_sock.recv(1024).decode()
-        response = requests.get(url)
-        html = response.text
-        freq = counter(html)
-        sorted_pairs = sorted(((key, value) for d in freq for key, value in d.items()), key=lambda pair: pair[1], reverse=True)
-        top_k = OrderedDict()
-        for key, value in sorted_pairs:
-            if key not in top_k:
-                top_k[key] = value
-                if len(top_k) == 3:
-                    break
-        client_sock.send(top_k.encode())
+    return top_k
+
+
+def fetch_several_urls(q):
+    while True:
+        try:
+            url = q.get_nowait()
+        except Exception:
+            return
+        q.task_done()
+
+        fetch_url(url)
 
 
 def counter(html):
@@ -60,27 +64,24 @@ def counter(html):
     return freq
 
 
-sem = threading.Semaphore(2)
+master_thread = threading.Thread(target=master(), name="class_thread_01", args=())
+master_thread.start()
+master_thread.join()
 
-threads = [
+worker_threads = [
     threading.Thread(
         target=fetch_url,
         name=f"class_thread_{i}",
-        args=(q, sem)
+        args=(queue_of_urls,),
+        daemon=True
     )
     for i in range(w)
 ]
 
-for th in threads:
+for th in worker_threads:
     th.start()
 
-for th in threads:
+for th in worker_threads:
     th.join()
 
-q.join()
-
-w, k = int(argv[3]), int(argv[5])
-
-
-master_th = threading.Thread(target=master(), name="class_thread_01", args=())
-master_th.start()
+queue_of_urls.join()

@@ -4,11 +4,13 @@ import socket
 from sys import argv
 
 M = int(argv[1])
+filename = argv[2]
+list_of_urls = []
 
 
-def send_to_server(url):
+def connect_with_server(url):
     client_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_sock.connect(("127.0.0.1", 5000))
+    client_sock.connect(("localhost", 15000))
 
     client_sock.send(url.encode('UTF-8'))
 
@@ -21,16 +23,14 @@ def send_to_server(url):
     client_sock.close()
 
 
-list_of_urls = []
-
-with open('urls.txt', "r") as f:
+with open(filename, "r") as f:
     for line in f:
         list_of_urls.append(line)
 
 for url in list_of_urls:
     threads = [
         threading.Thread(
-            target=send_to_server,
+            target=connect_with_server,
             name=f"class_thread_{i}",
             args=(url,)
         )
