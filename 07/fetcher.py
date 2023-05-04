@@ -26,7 +26,7 @@ async def fetch_url(url, sem):
             async with session.get(url) as resp:
                 global count
                 count += 1
-                # assert resp.status == 200
+                assert resp.status == 200
 
 
 async def fetch_batch(urls, sem):
