@@ -1,25 +1,24 @@
-from collections import deque
-
-
 class LRUCache:
 
-    def __init__(self, limit=42):
-        self.limit = limit
-        self.cache_list = deque()
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+        self.order = []
 
     def get(self, key):
-        for element in self.cache_list:
-            if key in element:
-                self.cache_list.remove(element)
-                self.cache_list.appendleft(element)
-                return element[1]
-        return None
+        if key not in self.cache:
+            return None
+        self.order.remove(key)
+        self.order.append(key)
+        return self.cache[key]
 
     def set(self, key, value):
-        element = key, value
-        self.cache_list.appendleft(element)
-        if len(self.cache_list) > self.limit:
-            self.cache_list.pop()
+        if key in self.cache:
+            self.order.remove(key)
+        elif len(self.cache) == self.capacity:
+            del self.cache[self.order.pop(0)]
+        self.cache[key] = value
+        self.order.append(key)
 
 
 # cache = LRUCache(2)
@@ -28,4 +27,4 @@ class LRUCache:
 # cache.set("k2", "val2")
 # cache.set("k3", "val3")
 #
-# print(cache.get("k2"))
+# print(cache.get("k4"))
