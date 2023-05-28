@@ -1,0 +1,9 @@
+https://docs.python.org/3/whatsnew/3.11.html
+https://docs.python.org/3/library/unittest.html
+https://docs.python.org/3/library/doctest.html
+https://en.wikipedia.org/wiki/Python_(programming_language)
+https://en.wikipedia.org/wiki/Netherlands
+https://en.wikipedia.org/wiki/North_Sea
+https://en.wikipedia.org/wiki/Scotland
+https://en.wikipedia.org/wiki/Country
+https://en.wikipedia.org/wiki/World
