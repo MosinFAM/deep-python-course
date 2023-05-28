@@ -1,0 +1,31 @@
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    28     19.5 MiB     19.5 MiB           1   @profile
+    29                                         def creating_instances(n):
+    30     22.7 MiB      3.2 MiB       50003       cars = [Car() for i in range(n)]
+    31     22.7 MiB      0.0 MiB           1       return cars
+
+
+Filename: C:\Users\AlexF\PycharmProjects\deep-python-course\08\classes.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    34     20.8 MiB     20.8 MiB           1   @profile
+    35                                         def creating_weak_instances(n):
+    36     22.6 MiB      1.7 MiB       50003       weak_cars = [WeakCar() for i in range(n)]
+    37     22.6 MiB      0.0 MiB           1       return weak_cars
+
+
+Filename: C:\Users\AlexF\PycharmProjects\deep-python-course\08\classes.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    40     21.6 MiB     21.6 MiB           1   @profile
+    41                                         def creating_slots_instances(n):
+    42     22.5 MiB      0.9 MiB       50003       slots_cars = [CarSlots() for i in range(n)]
+    43     22.5 MiB      0.0 MiB           1       return slots_cars
+
+
+
+
+
