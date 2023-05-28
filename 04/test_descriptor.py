@@ -9,11 +9,16 @@ class TestDescriptor(unittest.TestCase):
 
     def test_data(self):
         self.assertEqual(self.instance.mark, 22)
-        self.assertEqual(self.instance.name, 'deep-python-course')
-        self.assertEqual(self.instance.language, 'Python')
         with self.assertRaises(TypeError):
             self.instance.mark = 15
+        self.assertEqual(self.instance.mark, 22)
+        with self.assertRaises(TypeError):
             self.instance.mark = 'Python'
+        self.assertEqual(self.instance.name, 'deep-python-course')
+        with self.assertRaises(TypeError):
             self.instance.name = 143
+        self.assertEqual(self.instance.language, 'Python')
+        with self.assertRaises(TypeError):
             self.instance.language = 'Java'
-            self.instance.language = 99
+        self.instance.mark = 87
+        self.assertEqual(self.instance.mark, 87)

@@ -4,23 +4,26 @@ from meta import CustomClass
 
 
 class TestCustomMeta(unittest.TestCase):
-    def setUp(self):
-        self.instance = CustomClass()
-
     def test_meta(self):
-        self.assertEqual(self.instance.custom_x, 50)
+        self.assertEqual(CustomClass.custom_x, 50)
         with self.assertRaises(AttributeError):
-            self.instance.x
+            CustomClass.x
 
-        self.assertEqual(self.instance.custom_line(), 100)
-        with self.assertRaises(AttributeError):
-            self.instance.line()
+        self.inst = CustomClass()
 
-        self.assertEqual(self.instance.custom_val, 99)
+        self.assertEqual(self.inst.custom_x, 50)
         with self.assertRaises(AttributeError):
-            self.instance.val
+            self.inst.x
 
-        self.instance.dynamic = "added later"
-        self.assertEqual(self.instance.custom_dynamic, "added later")
+        self.assertEqual(self.inst.custom_line(), 100)
         with self.assertRaises(AttributeError):
-            self.instance.dynamic
+            self.inst.line()
+
+        self.assertEqual(self.inst.custom_val, 99)
+        with self.assertRaises(AttributeError):
+            self.inst.val
+
+        self.inst.dynamic = "added later"
+        self.assertEqual(self.inst.custom_dynamic, "added later")
+        with self.assertRaises(AttributeError):
+            self.inst.dynamic
